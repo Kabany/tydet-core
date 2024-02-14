@@ -4,12 +4,13 @@ import { CoreError } from "../src/error.core"
 
 class ExtendedService extends Service {
   private STATUS = "STATUS"
-  constructor(params: Map<string, any>, context: Context) {
-    super(params, context)
+  constructor(params: Map<string, any>) {
+    super(params)
     this.params.set(this.STATUS, "constructor")
   }
-  async beforeMount() {
+  async beforeMount(context: Context) {
     this.params.set(this.STATUS, "beforeMount")
+    await super.beforeMount(context)
   }
   async onMount() {
     this.params.set(this.STATUS, "onMount")
@@ -28,7 +29,7 @@ class ExtendedService extends Service {
 describe("Context and Service", () => {
   it("should create app and handle service events", async () => {
     let app = new Context()
-    let service = new ExtendedService(new Map(), app)
+    let service = new ExtendedService(new Map())
     await app.mountService("service", service)
     expect(service.getStatus()).toBe("onMount")
     await app.unmountServices()

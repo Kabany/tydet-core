@@ -10,17 +10,16 @@ export class Service {
   /**
    * Create a service to be added in the context on the app.
    * @param params - Variables required to initiate the service
-   * @param context - Main context. It will give access for other services added in the context core.
    */
-  constructor(params: Map<string, any>, context: Context) {
+  constructor(params: Map<string, any>) {
     this.params = params
-    this.context = context
   }
 
   /**
    * Handle the event to prepare the service parameters.
    */
-  async beforeMount() {
+  async beforeMount(context: Context) {
+    this.context = context
     if (this.params == null) {
       this.params = new Map()
     }

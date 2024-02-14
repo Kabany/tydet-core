@@ -28,7 +28,7 @@ import { Context, Service } from 'tydet-core';
 
 let app = new Context();
 let parameters = new Map<string, any>(); // set args depending on the service
-let service = new Service(parameters, app);
+let service = new Service(parameters);
 await app.mountService("service", Service);
 
 // get a service

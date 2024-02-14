@@ -37,7 +37,7 @@ export class Context {
     if (this.services.has(name)) {
       throw new CoreError(`There is a service already loaded with the name: ${name}`);
     }
-    await service.beforeMount()
+    await service.beforeMount(this)
     this.services.set(name, service)
     await this.services.get(name)?.onMount()
   }
