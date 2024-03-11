@@ -46,11 +46,20 @@ export class Context {
    * Unmount all services. Must be called when the main thread will exit.
    */
   async unmountServices() {
+    let logger: Service
     for await (let pair of this.services.entries()) {
-      let service = pair[1]
-      await service.beforeUnmount()
-      await service.onUnmount()
-      this.services.delete(pair[0])
+      if (pair[0].startsWith("logger")) {
+        logger = pair[1]
+      } else {
+        let service = pair[1]
+        await service.beforeUnmount()
+        await service.onUnmount()
+        this.services.delete(pair[0])
+      }
+    }
+    if (logger != null) {
+      await logger.beforeUnmount()
+      await logger.onUnmount()
     }
   }
 }
