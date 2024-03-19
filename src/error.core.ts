@@ -7,7 +7,7 @@ export class CoreError extends Error {
 
   constructor(message?: string) {
     super(message);
-    this.name = this.constructor.name;
+    this.name = "CoreError";
     this.message = message;
     this.stack = (new Error(message)).stack;  //`${this.message}\n${new Error().stack}`;
   }
