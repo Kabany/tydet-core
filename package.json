@@ -1,6 +1,6 @@
 {
   "name": "tydet-core",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "TyDeT Core is a Typescript & Javascript library with reusable components for a backend web server.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,6 +32,6 @@
     "babel-jest": "^29.7.0",
     "jest": "^29.7.0",
     "jest-editor-support": "^31.1.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.6.2"
   }
 }
