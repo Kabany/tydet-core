@@ -14,7 +14,7 @@ export class Context {
    */
   getService(name: string) {
     if (!this.services.has(name)) {
-      throw new CoreError(`No service found with the name: ${name}`);
+      throw new CoreError(`No service found with the name '${name}'`);
     }
     return this.services.get(name)!;
   }
@@ -35,7 +35,7 @@ export class Context {
    */
   async mountService(name: string, service: Service) {
     if (this.services.has(name)) {
-      throw new CoreError(`There is a service already loaded with the name: ${name}`);
+      throw new CoreError(`There is a service already loaded with the name '${name}'`);
     }
     await service.beforeMount(this)
     this.services.set(name, service)
