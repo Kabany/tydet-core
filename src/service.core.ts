@@ -1,10 +1,12 @@
 import { Context } from "./context.core"
+import { CoreError } from "./error.core"
 
 /**
  * Context component of the TyAPI Core. Handle the app services like connections to databases or bring several handlers available in the context core.
  */
 export class Service {
   protected params: Map<string, any>
+  private callUnmount = false
   context: Context
 
   /**
@@ -26,21 +28,62 @@ export class Service {
   }
 
   /**
-   * Handle the starting up event service. It can be used for create a connection with the database as an example.
+   * Handle the event to start up the service. It can be used for create a connection with the database as an example.
    */
   async onMount() {}
 
   /**
-   * Handle the event to prepare the service before shutting down.
+   * Handle the event after starting up the service. It can be used to log or notify that the service started with success.
    */
-  async beforeUnmount() {}
+  async afterMount() {}
 
   /**
-   * Handle the shutting down event service. It can be used to close the connection from a database as an example.
+   * Handle the event to prepare the parameters before resetting the service.
    */
-  async onUnmount() {
+  async beforeReset() {}
+
+  /**
+   * Handle the event to restart the service. It can be used to create a new connection to the database as an example.
+   */
+  async onReset() {}
+
+  /**
+   * Handle the event after resetting the service. It can be used to log or notify that the service restarted with success.
+   */
+  async afterReset() {}
+
+  /**
+   * Handle the event to prepare the service to be ejected. It can be used to clear pending jobs before ejecting.
+   */
+  async beforeEject() {
+    if (this.beforeUnmount) await this.beforeUnmount()
+  }
+
+  /**
+   * Handle the event to eject the service. It can be used to close the connection to the database as an example.
+   */
+  async onEject() {
+    if (this.onUnmount) await this.onUnmount()
+  }
+
+  /**
+   * Handle the event after ejecting the service. It can be used to log or notify that the service ended with success.
+   */
+  async afterEject() {
     if (this.params != null) {
       this.params.clear()
     }
   }
+
+  
+
+  /**
+   * @deprecated Since v2.0.0. Please use `beforeEject()` instead.
+   */
+  beforeUnmount: () => Promise<void>
+
+  /**
+   * @deprecated Since v2.0.0. Please use `onEject()` instead.
+   */
+  onUnmount: () => Promise<void>
 }

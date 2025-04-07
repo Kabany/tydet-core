@@ -9,17 +9,32 @@ class ExtendedService extends Service {
     this.params.set(this.STATUS, "constructor")
   }
   async beforeMount(context: Context) {
-    this.params.set(this.STATUS, "beforeMount")
     await super.beforeMount(context)
+    this.params.set(this.STATUS, "beforeMount")
   }
   async onMount() {
     this.params.set(this.STATUS, "onMount")
   }
-  async beforeUnmount() {
-    this.params.set(this.STATUS, "beforeUnmount")
+  async afterMount() {
+    this.params.set(this.STATUS, "afterMount")
   }
-  async onUnmount() {
-    this.params.set(this.STATUS, "onUnmount")
+  async beforeReset() {
+    this.params.set(this.STATUS, "beforeReset")
+  }
+  async onReset() {
+    this.params.set(this.STATUS, "onReset")
+  }
+  async afterReset() {
+    this.params.set(this.STATUS, "afterReset")
+  }
+  async beforeEject() {
+    this.params.set(this.STATUS, "beforeEject")
+  }
+  async onEject() {
+    this.params.set(this.STATUS, "onEject")
+  }
+  async afterEject() {
+    this.params.set(this.STATUS, "afterEject")
   }
   public getStatus() {
     return this.params.get(this.STATUS) as string
@@ -31,17 +46,20 @@ describe("Context and Service", () => {
     let app = new Context()
     let service = new ExtendedService(new Map())
     await app.mountService("service", service)
-    expect(service.getStatus()).toBe("onMount")
-    await app.unmountServices()
-    expect(service.getStatus()).toBe("onUnmount")
+    expect(service.getStatus()).toBe("afterMount")
+    await app.restartService("service")
+    expect(service.getStatus()).toBe("afterReset")
+    await app.ejectAllServices()
+    expect(service.getStatus()).toBe("afterEject")
   })
   it("should throw an error", async () => {
     let app = new Context()
     try {
       app.getService("service")
     } catch(err) {
+      expect(err instanceof CoreError).toBe(true)
       expect(err.name).toBe("CoreError")
-      expect(err.message).toBe("No service found with the name: service")
+      expect(err.message).toBe("No service found with the name 'service'")
     }
   })
 })

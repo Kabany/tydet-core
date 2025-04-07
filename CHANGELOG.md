@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.0.0] 2025-04-07
+### Updated
+* App lifecycle has been updated, now the flow is `beforeMount`, `onMount`, `afterMount`, `beforeRestart`, `onRestart`, `afterRestart`, `beforeEject`, `onEject`, `afterEject`.
+* `beforeUnmount` and `onUnmount`are deprecated. These methods are still called on `beforeEject` and `onEject` respectivelly only if the methods are defined. By default the methods are undefined.
+
 ## [v1.1.0] 2025-04-02
 ### Updated
 * CoreError prototype is updated, so when catching an error you can compare the error type using the `instanceof` operator.
